@@ -7,7 +7,12 @@ import 'domain/meal.dart';
 import 'designTokens/design_tokens.dart';
 
 class MainScrollPage extends StatefulWidget {
-  const MainScrollPage({super.key});
+  const MainScrollPage({
+    super.key,
+    required this.searchQuery,
+  });
+
+  final String searchQuery;
 
   @override
   State<MainScrollPage> createState() => _MainScrollPageState();
@@ -20,6 +25,14 @@ class _MainScrollPageState extends State<MainScrollPage> {
   String? _selectedCategory;
 
   @override
+  void didUpdateWidget(covariant MainScrollPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.searchQuery != widget.searchQuery) {
+      _searchMeals(widget.searchQuery);
+    }
+  }
+  @override
   void initState() {
     super.initState();
     final dio = Dio();
@@ -28,6 +41,20 @@ class _MainScrollPageState extends State<MainScrollPage> {
 
     _categoriesFuture = _mealRepository.getCategories();
     _mealsFuture = _mealRepository.getHomeFeed();
+  }
+   void _searchMeals(String query) {
+    setState(() {
+      if (query.trim().isEmpty) {
+        if (_selectedCategory != null) {
+          _mealsFuture = _mealRepository.getMealsByCategory(_selectedCategory!);
+        } else {
+          _mealsFuture = _mealRepository.getHomeFeed();
+        }
+      } else {
+        _selectedCategory = null;
+        _mealsFuture = _mealRepository.searchMeals(query);
+      }
+    });
   }
 
   void _onCategorySelected(String category) {
@@ -70,10 +97,10 @@ class _MainScrollPageState extends State<MainScrollPage> {
               future: _categoriesFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
+                  return  Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(color: DesignTokens.primary,),
                     ),
                   );
                 } else if (snapshot.hasError) {
@@ -126,7 +153,7 @@ class _MainScrollPageState extends State<MainScrollPage> {
               future: _mealsFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return  Center(child: CircularProgressIndicator(color: DesignTokens.primary,));
                 } else if (snapshot.hasError) {
                   return Center(child: Text("Error: ${snapshot.error}"));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
