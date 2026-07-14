@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizzle_flutter/designTokens/design_tokens.dart';
+import 'package:sizzle_flutter/gridList.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -12,7 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int index=0;
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,9 +23,7 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: DesignTokens.primary,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(24),
-            ),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
           ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,21 +64,28 @@ class _MyAppState extends State<MyApp> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: index,
-          onTap: (i){
+          onTap: (i) {
             setState(() {
-              index=i;
+              index = i;
             });
           },
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.dining_sharp,shadows: [
-              Shadow(color: DesignTokens.deepOrange)
-            ],), label: ""),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.dining_sharp,
+                shadows: [Shadow(color: DesignTokens.deepOrange)],
+              ),
+              label: "",
+            ),
             BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Saved"),
           ],
           selectedItemColor: DesignTokens.deepOrange,
         ),
-        body: Center(),
+        body: MainScrollPage(),
       ),
     );
   }
