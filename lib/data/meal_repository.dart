@@ -20,4 +20,9 @@ class MealRepository {
     final response = await _api.categories();
     return (response.categories ?? []).map((dto) => dto.toDomain()).toList();
   }
+
+  Future<List<Meal>> searchMeals(String query) async {
+    final response = await _api.search(query);
+    return (response.meals ?? []).map((dto) => dto.toDomain()).toList();
+  }
 }
