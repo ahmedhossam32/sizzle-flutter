@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: DesignTokens.primary,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.vertical(
+            borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(24),
             ),
           ),
