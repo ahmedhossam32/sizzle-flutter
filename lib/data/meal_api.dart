@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'meal_dto.dart';
 import 'category_dto.dart';
+import 'recipe_detail_dto.dart';
 
 part 'meal_api.g.dart';
 
@@ -17,4 +18,7 @@ abstract class MealApi {
 
   @GET('/categories.php')
   Future<CategoryResponse> categories();
+
+  @GET('/random.php')
+  Future<RandomMealResponse> random();
 }

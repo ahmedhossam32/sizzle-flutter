@@ -1,6 +1,7 @@
 import 'meal_api.dart';
 import '../domain/meal.dart';
 import '../domain/category.dart';
+import '../domain/recipe_detail.dart';
 
 class MealRepository {
   MealRepository(this._api);
@@ -24,5 +25,14 @@ class MealRepository {
   Future<List<Meal>> searchMeals(String query) async {
     final response = await _api.search(query);
     return (response.meals ?? []).map((dto) => dto.toDomain()).toList();
+  }
+
+  Future<RecipeDetail> getRandomMeal() async {
+    final response = await _api.random();
+    final meals = response.meals ?? [];
+    if (meals.isEmpty) {
+      throw Exception('No random meal returned');
+    }
+    return meals.first.toDomain();
   }
 }
